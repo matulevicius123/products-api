@@ -25,7 +25,7 @@ public class Product {
     @Column(nullable = false)
     private String seller;
 
-    @Column(nullable = false)
+    @Column(nullable = false, scale = 2)
     private float price;
 
     @Column(nullable = false)
