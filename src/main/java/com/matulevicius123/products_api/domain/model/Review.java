@@ -1,5 +1,6 @@
 package com.matulevicius123.products_api.domain.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,9 +12,10 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(hidden = true)
     private Long id;
     
-    @Column(unique = true, nullable = false)  
+    @Column(nullable = false)  
     private String username;
 
     @Column(nullable = false)
