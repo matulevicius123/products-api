@@ -6,7 +6,7 @@ O repositório serve como meu envio para o desafio **'Publicando Sua API REST na
 ```mermaid
 classDiagram
     class Product {
-        string id
+        Long id
         string name
         string seller
         float price
@@ -17,6 +17,7 @@ classDiagram
     }
 
     class Review {
+        Long id
         string user
         string comment
         float rating
