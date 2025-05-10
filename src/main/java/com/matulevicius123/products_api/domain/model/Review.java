@@ -6,9 +6,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity(name = "tb_review")
 public class Review {
+
+    public Review() { }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +27,11 @@ public class Review {
 
     @Column(nullable = false)
     private float rating;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    @Schema(hidden = true)
+    private Product product;
 
     public Long getId() {
         return id;
@@ -51,4 +60,13 @@ public class Review {
     public void setRating(float rating) {
         this.rating = rating;
     }
+
+    public Product getProduct() {
+        return product;
+    }
+    
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+    
 }

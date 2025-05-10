@@ -1,7 +1,6 @@
 package com.matulevicius123.products_api.domain.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +14,8 @@ import jakarta.persistence.OneToMany;
 
 @Entity(name = "tb_product")
 public class Product {
+
+    public Product() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +40,10 @@ public class Product {
     @Column(nullable = false)
     private float Rating;
     
-    @OneToMany(cascade = CascadeType.ALL)
-    private final List<Review> reviews = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Schema(hidden = true)
+    private List<Review> reviews = new ArrayList<>();
+    
 
     public Long getId() {
         return id;
@@ -92,6 +95,13 @@ public class Product {
     }
 
     public List<Review> getReviews() {
-        return Collections.unmodifiableList(reviews);
+        return reviews;
     }
+    
+
+    public void addReview(Review review) {
+        review.setProduct(this);
+        reviews.add(review);
+    }
+
 }

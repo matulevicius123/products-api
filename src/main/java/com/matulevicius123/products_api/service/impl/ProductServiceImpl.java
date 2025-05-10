@@ -5,8 +5,11 @@ import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 import com.matulevicius123.products_api.domain.model.Product;
+import com.matulevicius123.products_api.domain.model.Review;
 import com.matulevicius123.products_api.domain.repository.ProductRepository;
 import com.matulevicius123.products_api.service.ProductService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -40,5 +43,15 @@ public class ProductServiceImpl implements ProductService{
         }
         
         return productRepository.save(newProduct);
+    }
+
+    @Override
+    @Transactional
+    public Product addReviewToProduct(Long productId, Review review) {
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new NoSuchElementException("Product with ID " + productId + " not found"));
+
+        product.addReview(review); 
+        return productRepository.save(product);
     }
 }

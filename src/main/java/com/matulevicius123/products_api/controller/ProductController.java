@@ -1,9 +1,10 @@
 package com.matulevicius123.products_api.controller;
 
 import com.matulevicius123.products_api.domain.model.Product;
+import com.matulevicius123.products_api.domain.model.Review;
 import com.matulevicius123.products_api.service.ProductService;
 
-import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.transaction.Transactional;
 
 import java.net.URI;
 
@@ -26,15 +27,13 @@ public class ProductController {
     }
 
     @GetMapping("/id/{id}")
-    @Parameter(description = "ID of the product", example = "123", required = true)
-    public ResponseEntity<Product> findById(@PathVariable Long id) {
+    public ResponseEntity<Product> findById(@PathVariable("id") Long id) {
         var product = productService.findById(id);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping("/name/{name}")
-    @Parameter(description = "Name of the product", example = "Hairbrush", required = true)
-    public ResponseEntity<Product> findByName(@PathVariable String name) {
+    public ResponseEntity<Product> findByName(@PathVariable("name") String name) {
         var product = productService.findByName(name);
         return ResponseEntity.ok(product);
     }
@@ -47,5 +46,12 @@ public class ProductController {
             .buildAndExpand(productCreated.getId())
             .toUri();
         return ResponseEntity.created(location).body(productCreated);
+    }
+
+    @PostMapping("/{id}/reviews")
+    @Transactional
+    public ResponseEntity<Product> addReview(@PathVariable("id") Long id, @RequestBody Review review) {
+        productService.addReviewToProduct(id, review);
+        return ResponseEntity.noContent().build();
     }
 }
